@@ -6,23 +6,21 @@
 
   * makeContactSheet.sh requires ImageMagick, Ghostscript, and desired font installations
 
-Install ImageMagick on MacOS: Please execute these commands in  your Mac Terminal:
+### OPTION #1: Install ImageMagick and GhostScript on MacOS using homebrew. Please execute these commands in  your Mac Terminal:
 
 ```
 $ brew install imagemagick
-# OR
-$ conda install imagemagick
-```
-
-Install Ghostscript on MacOS:
-
-```
 $ brew install ghostscript
-# OR
+```
+
+### OPTION #2: ImageMagick Ghostscript on MacOS using anaconda: Please execute these commands in  your Mac Terminal:
+
+```
+$ conda install imagemagick
 $ conda install conda-forge::ghostscript
 ```
 
-Test installations and get versions:
+### Test installations and get versions:
 
 ```
 $ magick -version
