@@ -51,7 +51,7 @@ To find your path on macOS: Check `/Library/Fonts/`, `/System/Library/Fonts/`, o
 
 Ensure that you are within a directory where there are a set of .jpg files. 
 
-Use ls *.jpg to see the files that will be merged into a contact sheet
+In your terminal, use ls *.jpg to see the files that will be merged into a contact sheet
 
 ```
 ls *.jpg
