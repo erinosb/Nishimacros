@@ -3,15 +3,16 @@
 ## INSTALL
 
   * Download the repository with git clone
-  * To make contact sheets, first execute `makeProjectionsForContactSheet.ijm` in FIJI and then, after, execute `makeContactSheet` on the command line
+  * To make contact sheets, you will first execute `makeProjectionsForContactSheet.ijm` in FIJI and then, after, execute `makeContactSheet` on the command line
 
-Using makeProjectionsForContactSheet.ijm:
+
+### How to use makeProjectionsForContactSheet.ijm:
 
   * To use `makeProjectionsForContactSheet.ijm`, open FIJI. Select **Plugins** -> **Macros** -> **Edit...**
   * Navigate to the makeProjectionsForContactSheet.ijm and Open
   * Read instructions to modify the code and push **Run**
 
-Installing makeContactSheet.sh 
+## How to install makeContactSheet
 
   * To allow you to use makeContactSheet anywhere in your file structure, add this folder (~/01_makeContactSheet) to your path
   * `makeContactSheet` requires ImageMagick, Ghostscript, and the desired font-path
@@ -35,7 +36,7 @@ $ conda install imagemagick
 $ conda install conda-forge::ghostscript
 ```
 
-### Test installations and get versions
+### Test imagemagick and ghostscript installations and get versions
 
 ```
 $ magick -version
@@ -46,4 +47,16 @@ $ gs -v
 
 To find your path on macOS: Check /Library/Fonts/, /System/Library/Fonts/, or ~/Library/Fonts/. Replace the string with your own desired font. 
 
-## DEMO
+## How to use makeContactSheet
+
+Ensure that you are within a directory where there are a set of .jpg files. 
+
+Use ls *.jpg to see the files that will be merged into a contact sheet
+
+```
+ls *.jpg
+```
+
+Usage: bash makeContactSheet.sh <contactsheetname.jpg>\\
+     <contactsheetname.jpg>     Replace with the desired contactsheet file name. Make sure to remove < and > . 
+
