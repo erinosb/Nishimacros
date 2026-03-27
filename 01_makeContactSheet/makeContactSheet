@@ -5,7 +5,7 @@
 # INSTRUCTIONS: Modify this command
 # Add in your preferred font path + .tff file here
 # To find your path on macOS: Check /Library/Fonts/, /System/Library/Fonts/, or ~/Library/Fonts/.
-myfont="/Library/Fonts/Arial\ Unicode.ttf"
+myfont="System/Library/Fonts/Supplemental/Arial Unicode.ttf"
 
 # INSTRUCTIONS: Modify this command. See ImageMagick Montage instructions for more ways to modify
 # https://imagemagick.org/script/montage.php#gsc.tab=0

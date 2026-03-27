@@ -9,6 +9,7 @@ outputDir="/path/to/input/dir/output";
 
 // Defaults: Please modify these as desired:
 // * Default is to look for R3D.dv files. To modify, edit line #32
+// * Default z-projection range is 1 - 20. To modify, edit line 70
 // * Default brightness max and min are specified between lines 78 & 90. Please run the program once, select your favorite settings, and modify those lines appropriately
 // * Default way to merge channels into specific colors is in line 91. Please modify as desired
 // * Default exports are in lines 102 - 110
@@ -66,7 +67,7 @@ for (i=0; i<dv_array.length; i++) {
 	run("Enhance Contrast", "saturated=0.35");
 	
 	// z project
-	run("Z Project...", "start=1 stop=25 projection=[Max Intensity]");
+	run("Z Project...", "start=1 stop=20 projection=[Max Intensity]");
 	
 	// split channels
     run("Split Channels");
@@ -77,17 +78,21 @@ for (i=0; i<dv_array.length; i++) {
     c3title = "C3-MAX_" + dv_array[i];
     c4title = "C4-MAX_" + dv_array[i];
     
-    // set the green channel - c2
-    selectWindow(c2title);
+    // set the brightness - c1
+    selectWindow(c1title);
     setMinAndMax(385, 5524); 
     
-    // set the blue channel - c4
-    selectWindow(c3title);
-    setMinAndMax(625, 6755);   
+    // set the brightness - c2
+    selectWindow(c2title);
+    setMinAndMax(385, 5524);   
     
-    // set the magenta channel - c1
+    // set the brightness - c3
     selectWindow(c1title);
     setMinAndMax(2583, 9935);       
+
+    // set the brightness - c4
+    selectWindow(c4title);
+    setMinAndMax(2583, 9935);  
     
     run("Merge Channels...", "c2=[" + c2title + "] c3=[" + c4title + "] c6=[" + c1title + "] create");
     
