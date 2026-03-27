@@ -15,7 +15,7 @@ myfont="/Library/Fonts/Arial\ Unicode.ttf"
 # EXAMPLE EXECUTION: Execute this command with:
 # Ensure that you are within a directory where there are a set of .jpg files. Use ls *.jpg to see the files that will be merged into a contact sheet
 # ls *.jpg
-# bash makeContactSheet.sh <contactsheetname.jpg>
+# bash makeContactSheet <contactsheetname.jpg>
 
 #      <contactsheetname.jpg>     Replace with the desired contactsheet file name. Make sure to remove < and > . 
 
