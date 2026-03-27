@@ -19,10 +19,43 @@
 
 // Please change this part to your input and output directories and desired contact sheet file name
 
-// DIRECTORIES: Enter the input directory. This directory must have at least one R3D_D3D.dv files within it, preferably a set
+// DIRECTORIES: Enter the input directory. This directory must have a 
+//inputDir="/Volumes/NESS/260304_PolyC_FigureS9/01_input/DG3913_lin41_transg_wt";
+//outputDir="/Volumes/NESS/260304_PolyC_FigureS9/01_input/DG3913_lin41_transg_wt/output";
 
-inputDir="/path/to/directory";
-outputDir="/path/to/directory/output";
+//inputDir="/Volumes/NESS/260304_PolyC_FigureS9/01_input/DG5329_unknown";
+//outputDir="/Volumes/NESS/260304_PolyC_FigureS9/01_input/DG5329_unknown/output";
+
+//inputDir="/Volumes/NESS/260304_PolyC_FigureS9/01_input/DG5410_smallPolyC_deletion";
+//outputDir="/Volumes/NESS/260304_PolyC_FigureS9/01_input/DG5410_smallPolyC_deletion/output";
+
+//inputDir="/Volumes/NESS/260216_Naly_drugTreatments/260311_Nocodazole_drug_treatments_merged/1_NT002_TBB2GFP/Control_0uM_Nocodazole/Rep1_220927_Control_0uM_Nocodazole_wNT002";
+//outputDir="/Volumes/NESS/260216_Naly_drugTreatments/260311_Nocodazole_drug_treatments_merged/1_NT002_TBB2GFP/Control_0uM_Nocodazole/Rep1_220927_Control_0uM_Nocodazole_wNT002/output-2cell";
+
+//inputDir="/Volumes/NESS/260216_Naly_drugTreatments/260311_Nocodazole_drug_treatments_merged/1_NT002_TBB2GFP/Test_150uM_Nocodazole/Rep1_220914_Test_150uM_Nocodazole_wNT002";
+//outputDir="/Volumes/NESS/260216_Naly_drugTreatments/260311_Nocodazole_drug_treatments_merged/1_NT002_TBB2GFP/Test_150uM_Nocodazole/Rep1_220914_Test_150uM_Nocodazole_wNT002/output";
+
+//inputDir="/Volumes/NESS/260216_Naly_drugTreatments/260311_Nocodazole_drug_treatments_merged/1_NT002_TBB2GFP/Test_150uM_Nocodazole/Rep2_230210_Test_150uM_Nocodazole_wNT002";
+//outputDir="/Volumes/NESS/260216_Naly_drugTreatments/260311_Nocodazole_drug_treatments_merged/1_NT002_TBB2GFP/Test_150uM_Nocodazole/Rep2_230210_Test_150uM_Nocodazole_wNT002/output";
+
+//inputDir="/Volumes/NESS/260216_Naly_drugTreatments/260311_Nocodazole_drug_treatments_merged/1_NT002_TBB2GFP/Test_150uM_Nocodazole/Rep3_231112_Test_150uM_Nocodazole_wNT002";
+//outputDir="/Volumes/NESS/260216_Naly_drugTreatments/260311_Nocodazole_drug_treatments_merged/1_NT002_TBB2GFP/Test_150uM_Nocodazole/Rep3_231112_Test_150uM_Nocodazole_wNT002/output";
+
+//inputDir="/Volumes/NESS/260216_Naly_drugTreatments/260311_Nocodazole_drug_treatments_merged/1_NT002_TBB2GFP/Test_150uM_Nocodazole/Rep4_231114_Test_150uM_Nocodazole_wNT002";
+//outputDir="/Volumes/NESS/260216_Naly_drugTreatments/260311_Nocodazole_drug_treatments_merged/1_NT002_TBB2GFP/Test_150uM_Nocodazole/Rep4_231114_Test_150uM_Nocodazole_wNT002/output";
+
+
+//inputDir="/Volumes/NESS/260216_Naly_drugTreatments/260311_Nocodazole_drug_treatments_merged/2_LP007_ERM1GFP/Control_0uM_Nocodazole/Rep1_231104_Control_0uM_Nocodazole_LP007";
+//outputDir="/Volumes/NESS/260216_Naly_drugTreatments/260311_Nocodazole_drug_treatments_merged/2_LP007_ERM1GFP/Control_0uM_Nocodazole/Rep1_231104_Control_0uM_Nocodazole_LP007/output";
+
+//inputDir="/Volumes/NESS/260216_Naly_drugTreatments/260311_Nocodazole_drug_treatments_merged/2_LP007_ERM1GFP/Control_0uM_Nocodazole/Rep2_231107_Control_0uM_Nocodazole_LP007";
+//outputDir="/Volumes/NESS/260216_Naly_drugTreatments/260311_Nocodazole_drug_treatments_merged/2_LP007_ERM1GFP/Control_0uM_Nocodazole/Rep2_231107_Control_0uM_Nocodazole_LP007/output";
+
+//inputDir="/Volumes/NESS/260216_Naly_drugTreatments/260311_Nocodazole_drug_treatments_merged/2_LP007_ERM1GFP/Control_0uM_Nocodazole/Rep3_231112_Control_0uM_Nocodazole_LP007";
+//outputDir="/Volumes/NESS/260216_Naly_drugTreatments/260311_Nocodazole_drug_treatments_merged/2_LP007_ERM1GFP/Control_0uM_Nocodazole/Rep3_231112_Control_0uM_Nocodazole_LP007/output";
+
+inputDir="/Volumes/NESS/260216_Naly_drugTreatments/260311_Nocodazole_drug_treatments_merged/2_LP007_ERM1GFP/Test_150uM_Nocodazole/Rep2_231107_Test_150uM_Nocodazole_LP007";
+outputDir="/Volumes/NESS/260216_Naly_drugTreatments/260311_Nocodazole_drug_treatments_merged/2_LP007_ERM1GFP/Test_150uM_Nocodazole/Rep2_231107_Test_150uM_Nocodazole_LP007/output";
 
 
 // Z-PROJECT: Specify how many z-slices will be selecte for z-projection. Default is 35:
