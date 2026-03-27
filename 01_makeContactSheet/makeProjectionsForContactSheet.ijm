@@ -1,44 +1,17 @@
 
 // SELECT YOUR PARAMETERS. Please change this part to your input and output directories and desired contact sheet file name
 
-//inputDir="/Volumes/NESS/260216_Naly_drugTreatments/260311_Nocodazole_drug_treatments_merged/1_NT002_TBB2GFP/Control_0uM_Nocodazole/Rep1_220927_Control_0uM_Nocodazole_wNT002";
-//outputDir="/Volumes/NESS/260216_Naly_drugTreatments/260311_Nocodazole_drug_treatments_merged/1_NT002_TBB2GFP/Control_0uM_Nocodazole/Rep1_220927_Control_0uM_Nocodazole_wNT002/output";
 
-//inputDir="/Volumes/NESS/260216_Naly_drugTreatments/260311_Nocodazole_drug_treatments_merged/1_NT002_TBB2GFP/Control_0uM_Nocodazole/Rep2_231112_Control_0uM_Nocodazole_wNT002"
-//outputDir="/Volumes/NESS/260216_Naly_drugTreatments/260311_Nocodazole_drug_treatments_merged/1_NT002_TBB2GFP/Control_0uM_Nocodazole/Rep2_231112_Control_0uM_Nocodazole_wNT002/output";
+inputDir="/path/to/input/dir/";
+// note - this directory must exist already and contain .dv files 
+outputDir="/path/to/input/dir/output";
+// You can specify an output directory, and it will create a new directory or add to an existing one
 
-//inputDir="/Volumes/NESS/260216_Naly_drugTreatments/260311_Nocodazole_drug_treatments_merged/1_NT002_TBB2GFP/Control_0uM_Nocodazole/Rep3_231114_Control_0uM_Nocodazole_wNT002"
-//outputDir="/Volumes/NESS/260216_Naly_drugTreatments/260311_Nocodazole_drug_treatments_merged/1_NT002_TBB2GFP/Control_0uM_Nocodazole/Rep3_231114_Control_0uM_Nocodazole_wNT002/output";
-
-//inputDir="/Volumes/NESS/260216_Naly_drugTreatments/260311_Nocodazole_drug_treatments_merged/1_NT002_TBB2GFP/Test_150uM_Nocodazole/Rep1_220914_Test_150uM_Nocodazole_wNT002";
-//outputDir="/Volumes/NESS/260216_Naly_drugTreatments/260311_Nocodazole_drug_treatments_merged/1_NT002_TBB2GFP/Test_150uM_Nocodazole/Rep1_220914_Test_150uM_Nocodazole_wNT002/output";
-
-//inputDir="/Volumes/NESS/260216_Naly_drugTreatments/260311_Nocodazole_drug_treatments_merged/1_NT002_TBB2GFP/Test_150uM_Nocodazole/Rep2_230210_Test_150uM_Nocodazole_wNT002";
-//outputDir="/Volumes/NESS/260216_Naly_drugTreatments/260311_Nocodazole_drug_treatments_merged/1_NT002_TBB2GFP/Test_150uM_Nocodazole/Rep2_230210_Test_150uM_Nocodazole_wNT002/output";
-
-//inputDir="/Volumes/NESS/260216_Naly_drugTreatments/260311_Nocodazole_drug_treatments_merged/1_NT002_TBB2GFP/Test_150uM_Nocodazole/Rep3_231112_Test_150uM_Nocodazole_wNT002";
-//outputDir="/Volumes/NESS/260216_Naly_drugTreatments/260311_Nocodazole_drug_treatments_merged/1_NT002_TBB2GFP/Test_150uM_Nocodazole/Rep3_231112_Test_150uM_Nocodazole_wNT002/output";
-
-//inputDir="/Volumes/NESS/260216_Naly_drugTreatments/260311_Nocodazole_drug_treatments_merged/1_NT002_TBB2GFP/Test_150uM_Nocodazole/Rep4_231114_Test_150uM_Nocodazole_wNT002";
-//'outputDir="/Volumes/NESS/260216_Naly_drugTreatments/260311_Nocodazole_drug_treatments_merged/1_NT002_TBB2GFP/Test_150uM_Nocodazole/Rep4_231114_Test_150uM_Nocodazole_wNT002/output";
-
-//inputDir="/Volumes/NESS/260216_Naly_drugTreatments/260311_Nocodazole_drug_treatments_merged/2_LP007_ERM1GFP/Control_0uM_Nocodazole/Rep1_231104_Control_0uM_Nocodazole_LP007";
-//outputDir="/Volumes/NESS/260216_Naly_drugTreatments/260311_Nocodazole_drug_treatments_merged/2_LP007_ERM1GFP/Control_0uM_Nocodazole/Rep1_231104_Control_0uM_Nocodazole_LP007/output";
-
-//inputDir="/Volumes/NESS/260216_Naly_drugTreatments/260311_Nocodazole_drug_treatments_merged/2_LP007_ERM1GFP/Control_0uM_Nocodazole/Rep2_231107_Control_0uM_Nocodazole_LP007";
-//outputDir="/Volumes/NESS/260216_Naly_drugTreatments/260311_Nocodazole_drug_treatments_merged/2_LP007_ERM1GFP/Control_0uM_Nocodazole/Rep2_231107_Control_0uM_Nocodazole_LP007/output";
-
-//inputDir="/Volumes/NESS/260216_Naly_drugTreatments/260311_Nocodazole_drug_treatments_merged/2_LP007_ERM1GFP/Control_0uM_Nocodazole/Rep3_231112_Control_0uM_Nocodazole_LP007";
-//outputDir="/Volumes/NESS/260216_Naly_drugTreatments/260311_Nocodazole_drug_treatments_merged/2_LP007_ERM1GFP/Control_0uM_Nocodazole/Rep3_231112_Control_0uM_Nocodazole_LP007/output";
-
-inputDir="/Volumes/NESS/260216_Naly_drugTreatments/260311_Nocodazole_drug_treatments_merged/2_LP007_ERM1GFP/Test_150uM_Nocodazole/Rep1_231104_Test_150uM_Nocodazole_LP007";
-outputDir="/Volumes/NESS/260216_Naly_drugTreatments/260311_Nocodazole_drug_treatments_merged/2_LP007_ERM1GFP/Test_150uM_Nocodazole/Rep1_231104_Test_150uM_Nocodazole_LP007/output";
-
-//inputDir="/Volumes/NESS/260216_Naly_drugTreatments/260311_Nocodazole_drug_treatments_merged/2_LP007_ERM1GFP/Test_150uM_Nocodazole/Rep2_231107_Test_150uM_Nocodazole_LP007";
-//outputDir="/Volumes/NESS/260216_Naly_drugTreatments/260311_Nocodazole_drug_treatments_merged/2_LP007_ERM1GFP/Test_150uM_Nocodazole/Rep2_231107_Test_150uM_Nocodazole_LP007/output";
-
-// Note - the 1st rep of the test wLP007 sample did not have D3D files
-
+// Defaults: Please modify these as desired:
+// * Default is to look for R3D.dv files. To modify, edit line #32
+// * Default brightness max and min are specified between lines 78 & 90. Please run the program once, select your favorite settings, and modify those lines appropriately
+// * Default way to merge channels into specific colors is in line 91. Please modify as desired
+// * Default exports are in lines 102 - 110
 
 //////////////////////////////////////////////////////////
 
