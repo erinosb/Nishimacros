@@ -8,13 +8,14 @@
 
 ### How to use makeProjectionsForContactSheet.ijm:
 
+  * I suggest making a copy of `makeProjectionsForContactSheet.ijm` for each project and placing it in a directory that makes sense for that project
   * To use `makeProjectionsForContactSheet.ijm`, open FIJI. Select **Plugins** -> **Macros** -> **Edit...**
-  * Navigate to the makeProjectionsForContactSheet.ijm and Open
-  * Read instructions to modify the code and push **Run**
+  * Navigate to the `makeProjectionsForContactSheet.ijm` and push **Open**
+  * Read instructions for code. Modify the code as instructed for your project, and push **Run**
 
 ### How to install makeContactSheet
 
-  * To allow you to use makeContactSheet anywhere in your file structure, add this folder (~/01_makeContactSheet) to your path
+  * To allow you to use makeContactSheet anywhere in your file structure, add its folder (~/01_makeContactSheet) to your path
   * `makeContactSheet` requires ImageMagick, Ghostscript, and the desired font-path
   * Install ImageMagick and Ghostscript using one of these methods:
 
