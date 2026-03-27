@@ -45,7 +45,7 @@ $ gs -v
 
 #### Modify the makeContactSheet file by adding your desired font path.
 
-To find your path on macOS: Check /Library/Fonts/, /System/Library/Fonts/, or ~/Library/Fonts/. Replace the string with your own desired font. 
+To find your path on macOS: Check `/Library/Fonts/`, `/System/Library/Fonts/`, or `~/Library/Fonts/` for .ttf files. Replace the string with your own desired font. 
 
 ### How to use makeContactSheet
 
@@ -57,6 +57,14 @@ Use ls *.jpg to see the files that will be merged into a contact sheet
 ls *.jpg
 ```
 
-Usage: bash makeContactSheet.sh <contactsheetname.jpg>\\
-     <contactsheetname.jpg>     Replace with the desired contactsheet file name. Make sure to remove < and > . 
+```
+Usage: bash makeContactSheet <contactsheetname.jpg>
+     <contactsheetname.jpg>     Replace with the desired contactsheet file name. Make sure to remove < and > .
+```
+
+Example:
+
+```
+$ makeContactSheet 260327_Strain1_contactSheet.jpg
+````
 
