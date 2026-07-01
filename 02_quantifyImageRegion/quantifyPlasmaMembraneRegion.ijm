@@ -2,9 +2,9 @@
 ///    SELECT YOUR PARAMETERS      ///
 //////////////////////////////////////
 
-// DATE:     Started March 11, 2026
-// AUTHOR:   Erin Osborne Nishimura
-// SCRIPT:   260311_erm1_membrane_quantification_2cell.ijm
+// DATE:     Started JUNE 22, 2026
+// AUTHOR:   Sam Zavislan
+// SCRIPT:   260526_quantifyPMregion_SZP.ijm
 // PURPOSE:  This script takes as input a folder of .dv microscopy imgage files. Files have 3 or 4 channels and multiple z-projections. 
 //           This script then does the following:
 //              - Creates a z-projection of a fixed number of slices (user input required to set a start slice for each image)
@@ -21,9 +21,10 @@
 
 // DIRECTORIES: Enter the input directory. This directory must have at least one R3D_D3D.dv files within it, preferably a set
 
-inputDir="/path/to/directory";
-outputDir="/path/to/directory/output";
+// KLP-18 rep 1
 
+inputDir="/Users/samzavislan/Desktop/test/new_quant_script/01_inputTest";
+outputDir="/Users/samzavislan/Desktop/test/new_quant_script/03_output";
 
 // Z-PROJECT: Specify how many z-slices will be selecte for z-projection. Default is 35:
 zSliceDepth = 7;
@@ -37,21 +38,24 @@ channelNo=4;
 // Possible colors are: red, green, blue, gray, cyan, magenta, yellow
 // Select a channel by adding a color as a value; channels labeled "none" will not be included in the composite.
 channel1 = "none";
-channel2 = "green";
-channel3 = "none";
+channel2 = "magenta";
+channel3 = "green";
 channel4 = "blue";
 
 // MAX/MIN Brightness - OPTIONAL: Set the channel max and min to adjust brightness if you like. Leave at 0 if you want it automatically determined. 
 // Automatically determined brightness settings will determine min and max settings that yield a contrast of 0.35 in the first image
 // All downstream images will use that same min and max channel setting. 
-//ch1min = 160;
-//ch1max = 8826;
-ch2min = 2000;
-ch2max = 30000;
-ch3min = 0;
-ch3max = 0;
-ch4min = 300;
-ch4max = 34000;
+
+// Settings determined from first run auto contrast
+
+ch1min = 0;
+ch1max = 0;
+ch2min = 1067.0039;
+ch2max = 7052.6719;
+ch3min = 839;
+ch3max = 13017.7852;
+ch4min = 720.9883;
+ch4max = 5039.3008;
 
 //////////////////////////////////////////////
 ///     PARAMETERS SELECTION COMPLETE      ///
@@ -126,8 +130,12 @@ timeNow  = d2s(hour, 0) + d2s(minute, 0);
 
 // Initialize logfile:
 // Choose output directory
-logPath = inputDir + "/" + todaysDate + "_" + timeNow + "_" + "logfile.txt";
-dataPath = inputDir + "/" + todaysDate + "_" + timeNow + "_" + "datafile.txt";
+parentDir = File.getParent(inputDir);
+folderName = File.getName(parentDir);
+// Automatically append folder name to "for" + "_" +
+logPath = inputDir + "/" + todaysDate + "_" + timeNow + "_" + "logfile" + "_" + "for" + "_" + folderName + ".txt";
+// Automatically append folder name to "for" + "_" +
+dataPath = inputDir + "/" + todaysDate + "_" + timeNow + "_" + "datafile" + "_" + "for" + "_" + folderName + ".txt";
 
 // Record time
 logfile = File.open(logPath);
@@ -181,7 +189,7 @@ dv_array = newArray(0);
 
 // Save .dv files in a dv_array:
 for (i=0; i<fileList.length; i++) {
-    if(endsWith(fileList[i], "R3D_D3D.dv"))
+    if(endsWith(fileList[i], "R3D.dv"))
     {
     	dv_array = Array.concat(dv_array, fileList[i]);
     }
@@ -341,34 +349,125 @@ for (i=0; i<dv_array.length; i++) {
     print("\t--Setting Channe2 max: " + ch2max);
 	File.append("\t--Setting Channe2 max: " + ch2max, logPath);
     
-    // Rotate the image as per user specifications
-    print("\t--Starting Rotation");  
-    File.append("\t--Starting Rotation", logPath);
+    // Determine AP axis from user-clicked anterior/posterior points
+    // (image pixel data is never rotated - only the rectangle SELECTION is rotated,
+    // so raw intensity values are preserved exactly, unaffected by interpolation)
+    print("\t--Starting AP axis determination");  
+    File.append("\t--Starting AP axis determination", logPath);
     
-    waitForUser("Action Required", "Using the next dialog box, rotate the image so that anterior is to the left and posterior to the right. Click OK to begin.");
-    run("Rotate... ");
-    myangle = getValue("rotation.angle");
+    // This whole block (point-clicking through rectangle placement) repeats until
+    // the user confirms the rectangle looks right. Only this block redoes - Z-projection
+    // and brightness settings above are NOT reset between redo attempts.
+    apConfirmed = false;
+    redoAttempt = 0;
+    do {
+    	redoAttempt = redoAttempt + 1;
+    	if (redoAttempt > 1) {
+    		print("\t--Redo attempt #" + redoAttempt + " for AP points/rectangle");
+    		File.append("\t--Redo attempt #" + redoAttempt + " for AP points/rectangle", logPath);
+    	}
+    	
+    	setTool("multipoint");
+    	waitForUser("Action Required", "Using the Point tool, click ONCE on the anterior tip of the embryo, then ONCE on the posterior tip (2 points total, in that order). Click OK when both points are placed.");
+    	
+    	getSelectionCoordinates(apXpoints, apYpoints);
+    	if (apXpoints.length != 2) {
+    		exit("Expected exactly 2 points (anterior, posterior) but got " + apXpoints.length + ". Please re-run and place exactly 2 points.");
+    	}
+    	
+    	anteriorX = apXpoints[0];
+    	anteriorY = apYpoints[0];
+    	posteriorX = apXpoints[1];
+    	posteriorY = apYpoints[1];
+    	
+    	// Angle of the AP axis, for logging only (not used to build the rectangle below,
+    	// which is built directly from the two clicked points via makeRotatedRectangle)
+    	myangle = atan2(posteriorY - anteriorY, posteriorX - anteriorX) * 180 / PI;
+    	
+    	// Report angle and clicked points
+    	print("\t--Anterior point: " + anteriorX + ", " + anteriorY);
+    	File.append("\t--Anterior point: " + anteriorX + ", " + anteriorY, logPath);
+    	print("\t--Posterior point: " + posteriorX + ", " + posteriorY);
+    	File.append("\t--Posterior point: " + posteriorX + ", " + posteriorY, logPath);
+    	print("\t--AP axis angle: " + myangle + " degrees (image pixel data not rotated)");
+    	File.append("\t--AP axis angle: " + myangle + " degrees (image pixel data not rotated)", logPath);
+    	
+    	// Build a rotated rectangle SELECTION (not a rotated image) with the same
+    	// dimensions as the original fixed rectangle (333 x 69), centered on the AP
+    	// axis defined by the two clicked points. makeRotatedRectangle(x1,y1,x2,y2,width)
+    	// takes a centerline from (x1,y1) to (x2,y2) as the rectangle's LONG axis, and
+    	// 'width' as the perpendicular (short) dimension - so the centerline length
+    	// must equal the original long dimension (333) and width must equal the
+    	// original short dimension (69), regardless of how far apart the two clicked
+    	// points actually are.
+    	print("\t--Get Region of Interest (ROI) Selection"); 
+    	File.append("\t--Get Region of Interest (ROI) Selection", logPath);
+    	rectLength = 333; // long dimension, same as original rectangle width
+    	rectThickness = 69; // short dimension, same as original rectangle height
+    	
+    	// Unit vector along the AP axis (from anterior to posterior)
+    	apDeltaX = posteriorX - anteriorX;
+    	apDeltaY = posteriorY - anteriorY;
+    	apDist = sqrt(apDeltaX*apDeltaX + apDeltaY*apDeltaY);
+    	apUnitX = apDeltaX / apDist;
+    	apUnitY = apDeltaY / apDist;
+    	
+    	// Centerline of length rectLength, centered at the midpoint of the two clicked points,
+    	// oriented along the AP axis
+    	midX = (anteriorX + posteriorX) / 2;
+    	midY = (anteriorY + posteriorY) / 2;
+    	lineX1 = midX - (rectLength/2) * apUnitX;
+    	lineY1 = midY - (rectLength/2) * apUnitY;
+    	lineX2 = midX + (rectLength/2) * apUnitX;
+    	lineY2 = midY + (rectLength/2) * apUnitY;
+    	
+    	makeRotatedRectangle(lineX1, lineY1, lineX2, lineY2, rectThickness);
+    	waitForUser("Action Required", "Move the rotated rectangle to capture the membrane in the middle. Click OK to measure.");
+    	
+    	// Report selection bounds
+    	// NOTE: getSelectionBounds returns the axis-aligned BOUNDING BOX of the rotated
+    	// rectangle, not its true length/thickness. The rectangle's actual dimensions remain
+    	// rectLength x rectThickness (333 x 69) regardless of rotation; bounding-box x/y/width/height
+    	// below are logged for reference only and should not be interpreted as the rectangle's
+    	// own dimensions when myangle is not a multiple of 90.
+    	getSelectionBounds(x, y, width, height);
+    	print("\t--Selection of ROI complete. Rectangle dimensions: " + rectLength + " x " + rectThickness + ", AP angle " + myangle + " degrees. Bounding box: " + x + ", " + y + ", " + width + ", " + height); 
+    	File.append("\t--Selection of ROI complete. Rectangle dimensions: " + rectLength + " x " + rectThickness + ", AP angle " + myangle + " degrees. Bounding box: " + x + ", " + y + ", " + width + ", " + height, logPath);
+    	
+    	// Confirm before proceeding. "Cancel" exits the whole macro (getBoolean default
+    	// behavior); "No" redoes the point-clicking and rectangle placement above;
+    	// "Yes" continues on to saving/measurement below.
+    	apConfirmed = getBoolean("Does the rectangle look correctly placed and oriented along the AP axis?", "Yes, continue", "No, redo points/rectangle");
+    	if (!apConfirmed) {
+    		print("\t--User requested redo of AP points/rectangle");
+    		File.append("\t--User requested redo of AP points/rectangle", logPath);
+    	}
+    } while (!apConfirmed);
     
-    // Report rotation
-    print("\t--Rotation complete. Rotated by " + myangle + " angle");
-	File.append("\t--Rotation complete. Rotated by " + myangle + " angle", logPath);
-    
-    // Set rectangle
-    print("\t--Get Region of Interest (ROI) Selection"); 
-    File.append("\t--Get Region of Interest (ROI) Selection", logPath);
-	makeRectangle(125, 364, 333, 69);
-	waitForUser("Action Required", "Move the rectangle to capture the membrane in the middle. Click OK to measure.");
+
+	// Save a .tif of the full image with the rotated ROI box drawn on it as an overlay.
+	// run("Add Selection...") burns the rectangle into the image's overlay (does not
+	// change pixel values). saveAs() renames the active window to match the saved
+	// filename, so the original title is restored immediately after via rename(),
+	// since the SUM_/MAX_/AVERAGE_ title is needed further down for Plot Profile.
+	print("\t--Saving ROI overlay image (.tif)");
+	File.append("\t--Saving ROI overlay image (.tif)", logPath);
 	
-	// Report selection bounds
-	getSelectionBounds(x, y, width, height);
-    print("\t--Selection of ROI complete with coordinates: " + x + ", " + y + ", " + width + ", " + height); 
-    File.append("\t--Selection of ROI complete with coordinates: " + x + ", " + y + ", " + width + ", " + height, logPath);
+	originalTitle = getTitle();
+	run("Add Selection...");
+	baseName = File.getNameWithoutExtension(dv_array[i]);
+	tifOutPath = outputDir + "/" + baseName + "_ROI.tif";
+	saveAs("Tiff", tifOutPath);
+	rename(originalTitle);
+	print("\t--Saved: " + tifOutPath);
+	File.append("\t--Saved: " + tifOutPath, logPath);
 	
 	// Get values from Ch02
     print("\t--Select Channel 02"); 
     File.append("\t--Select Channel 02", logPath);
 	Stack.setChannel(2);
 	roiManager("Add");
+	ch2RoiIndex = roiManager("count") - 1; // index of the rotated rectangle just added, valid regardless of how many ROIs have accumulated across loop iterations
 	run("Plot Profile");
 	
 	xarray = newArray(0);
@@ -393,7 +492,7 @@ for (i=0; i<dv_array.length; i++) {
 	// Save ch2 values
 	buffer = "";
 	buffer = dv_array[i] + "\tch2\t";
-	for (j=0; j<xarray.length; j++) {
+	for (j=0; j<yarray.length; j++) {
     	buffer = buffer + yarray[j] + "\t";
 	}
 	File.append(buffer, dataPath);
@@ -413,8 +512,17 @@ for (i=0; i<dv_array.length; i++) {
 		selectWindow("AVERAGE_" + dv_array[i]);		
 	}
 
+	// Re-select the SAME rotated rectangle ROI used for Channel 2 (captured as
+	// ch2RoiIndex above), rather than rebuilding from x,y,width,height, since those
+	// are only the axis-aligned bounding box of the rotated rectangle and would NOT
+	// reproduce the rotated selection if myangle is not a multiple of 90.
+	// IMPORTANT: roiManager("Select", ...) restores the ROI's remembered stack
+	// position - since this ROI was first added while Channel 2 was active, selecting
+	// it silently switches the window back to Channel 2. Stack.setChannel(1) MUST run
+	// AFTER this select (not before), or Plot Profile below ends up measuring Channel 2
+	// again instead of Channel 1, producing a duplicate of the ch2 row in the datafile.
+	roiManager("Select", ch2RoiIndex);
 	Stack.setChannel(1);
-	makeRectangle(x, y, width, height);
 
 	roiManager("Add");
 	run("Plot Profile");
