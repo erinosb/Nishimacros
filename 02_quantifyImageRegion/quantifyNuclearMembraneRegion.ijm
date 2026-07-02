@@ -2,9 +2,9 @@
 ///    SELECT YOUR PARAMETERS      ///
 //////////////////////////////////////
 
-// DATE:     Started March 11, 2026
+// DATE:     Started May 27, 2026
 // AUTHOR:   Erin Osborne Nishimura
-// SCRIPT:   260311_erm1_membrane_quantification_2cell.ijm
+// SCRIPT:   260527_quantifyNuclearMembraneRegion.ijm
 // PURPOSE:  This script takes as input a folder of .dv microscopy imgage files. Files have 3 or 4 channels and multiple z-projections. 
 //           This script then does the following:
 //              - Creates a z-projection of a fixed number of slices (user input required to set a start slice for each image)
@@ -19,72 +19,55 @@
 
 // Please change this part to your input and output directories and desired contact sheet file name
 
-// DIRECTORIES: Enter the input directory. This directory must have a 
-//inputDir="/Volumes/NESS/260304_PolyC_FigureS9/01_input/DG3913_lin41_transg_wt";
-//outputDir="/Volumes/NESS/260304_PolyC_FigureS9/01_input/DG3913_lin41_transg_wt/output";
+// DIRECTORIES: Enter the input directory. 
+//inputDir="/Volumes/NESS/260518_Ambika_Paper/01_FIJI_Quantification/01_N2/250806_set3_imb2_rep1";
+//outputDir="/Volumes/NESS/260518_Ambika_Paper/01_FIJI_Quantification/01_N2/250806_set3_imb2_rep1/output";
 
-//inputDir="/Volumes/NESS/260304_PolyC_FigureS9/01_input/DG5329_unknown";
-//outputDir="/Volumes/NESS/260304_PolyC_FigureS9/01_input/DG5329_unknown/output";
+//inputDir="/Volumes/NESS/260518_Ambika_Paper/01_FIJI_Quantification/01_N2/250806_set3_imb2_rep2";
+//outputDir="/Volumes/NESS/260518_Ambika_Paper/01_FIJI_Quantification/01_N2/250806_set3_imb2_rep2/output";
 
-//inputDir="/Volumes/NESS/260304_PolyC_FigureS9/01_input/DG5410_smallPolyC_deletion";
-//outputDir="/Volumes/NESS/260304_PolyC_FigureS9/01_input/DG5410_smallPolyC_deletion/output";
+//inputDir="/Volumes/NESS/260518_Ambika_Paper/01_FIJI_Quantification/01_N2/250807_set3_imb2_rep3";
+//outputDir="/Volumes/NESS/260518_Ambika_Paper/01_FIJI_Quantification/01_N2/250807_set3_imb2_rep3/output";
 
-//inputDir="/Volumes/NESS/260216_Naly_drugTreatments/260311_Nocodazole_drug_treatments_merged/1_NT002_TBB2GFP/Control_0uM_Nocodazole/Rep1_220927_Control_0uM_Nocodazole_wNT002";
-//outputDir="/Volumes/NESS/260216_Naly_drugTreatments/260311_Nocodazole_drug_treatments_merged/1_NT002_TBB2GFP/Control_0uM_Nocodazole/Rep1_220927_Control_0uM_Nocodazole_wNT002/output-2cell";
-
-//inputDir="/Volumes/NESS/260216_Naly_drugTreatments/260311_Nocodazole_drug_treatments_merged/1_NT002_TBB2GFP/Test_150uM_Nocodazole/Rep1_220914_Test_150uM_Nocodazole_wNT002";
-//outputDir="/Volumes/NESS/260216_Naly_drugTreatments/260311_Nocodazole_drug_treatments_merged/1_NT002_TBB2GFP/Test_150uM_Nocodazole/Rep1_220914_Test_150uM_Nocodazole_wNT002/output";
-
-//inputDir="/Volumes/NESS/260216_Naly_drugTreatments/260311_Nocodazole_drug_treatments_merged/1_NT002_TBB2GFP/Test_150uM_Nocodazole/Rep2_230210_Test_150uM_Nocodazole_wNT002";
-//outputDir="/Volumes/NESS/260216_Naly_drugTreatments/260311_Nocodazole_drug_treatments_merged/1_NT002_TBB2GFP/Test_150uM_Nocodazole/Rep2_230210_Test_150uM_Nocodazole_wNT002/output";
-
-//inputDir="/Volumes/NESS/260216_Naly_drugTreatments/260311_Nocodazole_drug_treatments_merged/1_NT002_TBB2GFP/Test_150uM_Nocodazole/Rep3_231112_Test_150uM_Nocodazole_wNT002";
-//outputDir="/Volumes/NESS/260216_Naly_drugTreatments/260311_Nocodazole_drug_treatments_merged/1_NT002_TBB2GFP/Test_150uM_Nocodazole/Rep3_231112_Test_150uM_Nocodazole_wNT002/output";
-
-//inputDir="/Volumes/NESS/260216_Naly_drugTreatments/260311_Nocodazole_drug_treatments_merged/1_NT002_TBB2GFP/Test_150uM_Nocodazole/Rep4_231114_Test_150uM_Nocodazole_wNT002";
-//outputDir="/Volumes/NESS/260216_Naly_drugTreatments/260311_Nocodazole_drug_treatments_merged/1_NT002_TBB2GFP/Test_150uM_Nocodazole/Rep4_231114_Test_150uM_Nocodazole_wNT002/output";
+inputDir="/Volumes/NESS/260518_Ambika_Paper/01_FIJI_Quantification/01_N2/260527_N2_imb2_set3";
+outputDir="/Volumes/NESS/260518_Ambika_Paper/01_FIJI_Quantification/01_N2/260527_N2_imb2_set3/output";
 
 
-//inputDir="/Volumes/NESS/260216_Naly_drugTreatments/260311_Nocodazole_drug_treatments_merged/2_LP007_ERM1GFP/Control_0uM_Nocodazole/Rep1_231104_Control_0uM_Nocodazole_LP007";
-//outputDir="/Volumes/NESS/260216_Naly_drugTreatments/260311_Nocodazole_drug_treatments_merged/2_LP007_ERM1GFP/Control_0uM_Nocodazole/Rep1_231104_Control_0uM_Nocodazole_LP007/output";
 
-//inputDir="/Volumes/NESS/260216_Naly_drugTreatments/260311_Nocodazole_drug_treatments_merged/2_LP007_ERM1GFP/Control_0uM_Nocodazole/Rep2_231107_Control_0uM_Nocodazole_LP007";
-//outputDir="/Volumes/NESS/260216_Naly_drugTreatments/260311_Nocodazole_drug_treatments_merged/2_LP007_ERM1GFP/Control_0uM_Nocodazole/Rep2_231107_Control_0uM_Nocodazole_LP007/output";
-
-//inputDir="/Volumes/NESS/260216_Naly_drugTreatments/260311_Nocodazole_drug_treatments_merged/2_LP007_ERM1GFP/Control_0uM_Nocodazole/Rep3_231112_Control_0uM_Nocodazole_LP007";
-//outputDir="/Volumes/NESS/260216_Naly_drugTreatments/260311_Nocodazole_drug_treatments_merged/2_LP007_ERM1GFP/Control_0uM_Nocodazole/Rep3_231112_Control_0uM_Nocodazole_LP007/output";
-
-inputDir="/Volumes/NESS/260216_Naly_drugTreatments/260311_Nocodazole_drug_treatments_merged/2_LP007_ERM1GFP/Test_150uM_Nocodazole/Rep2_231107_Test_150uM_Nocodazole_LP007";
-outputDir="/Volumes/NESS/260216_Naly_drugTreatments/260311_Nocodazole_drug_treatments_merged/2_LP007_ERM1GFP/Test_150uM_Nocodazole/Rep2_231107_Test_150uM_Nocodazole_LP007/output";
-
-
-// Z-PROJECT: Specify how many z-slices will be selecte for z-projection. Default is 35:
+// Z-PROJECT: Specify how many z-slices will be selected for z-projection. Default is 35:
 zSliceDepth = 7;
 
 // CHANNELS: How many channels do you have? Default is 4, but 3 can also work. Change this value to 3 if necessary:
-channelNo=4;
+channelNo=3;
+
+// SAMPLES: Specify what is being measured in each channel
+channel1_sample = "imb-2";
+channel2_sample = "set-3";
+channel3_sample = "";
+channel4_sample = "";
+
 
 // COLORS: Specify which channels will be merged into the final composite image.
 // Channels are organized in fiji from left [1] to right [4]. 
 // Possible channels are: channel1, channel2, channel3, channel4
 // Possible colors are: red, green, blue, gray, cyan, magenta, yellow
 // Select a channel by adding a color as a value; channels labeled "none" will not be included in the composite.
-channel1 = "none";
-channel2 = "green";
-channel3 = "none";
-channel4 = "blue";
+channel1 = "green";
+channel2 = "magenta";
+channel3 = "blue";
+channel4 = "none";
 
 // MAX/MIN Brightness - OPTIONAL: Set the channel max and min to adjust brightness if you like. Leave at 0 if you want it automatically determined. 
 // Automatically determined brightness settings will determine min and max settings that yield a contrast of 0.35 in the first image
 // All downstream images will use that same min and max channel setting. 
-//ch1min = 160;
-//ch1max = 8826;
-ch2min = 2000;
-ch2max = 30000;
+ch1min = 0;
+ch1max = 0;
+ch2min = 0;
+ch2max = 0;
 ch3min = 0;
 ch3max = 0;
-ch4min = 300;
-ch4max = 34000;
+ch4min = 0;
+ch4max = 0;
 
 //////////////////////////////////////////////
 ///     PARAMETERS SELECTION COMPLETE      ///
@@ -159,17 +142,8 @@ timeNow  = d2s(hour, 0) + d2s(minute, 0);
 
 // Initialize logfile:
 // Choose output directory
-logPath = inputDir + "/" + todaysDate + "_" + timeNow + "_" + "logfile.txt";
-dataPath = inputDir + "/" + todaysDate + "_" + timeNow + "_" + "datafile.txt";
-
-// Record time
-logfile = File.open(logPath);
-print("Initiaiting macro: erm1_membrane_quantification_2cell");
-File.append("Initiaiting macro: erm1_membrane_quantification_2cell", logPath);
-print("\nDate: " + todaysDate);
-print("Time: " + timeNow);
-File.append("\nDate: " + todaysDate, logPath);
-File.append("Time: " + timeNow, logPath);
+logPath = outputDir + "/" + todaysDate + "_" + timeNow + "_" + "logfile.txt";
+dataPath = outputDir + "/" + todaysDate + "_" + timeNow + "_" + "datafile.txt";
 
 // Create the output directory
 File.makeDirectory(outputDir);
@@ -179,6 +153,15 @@ File.setDefaultDir(inputDir);
 
 // get the list of files in this directory
 fileList = getFileList(inputDir);
+
+// Record time
+logfile = File.open(logPath);
+print("Initiaiting macro: 260527_quantifyNuclearMembraneRegion.ijm");
+File.append("Initiaiting macro: 260527_quantifyNuclearMembraneRegion.ijm", logPath);
+print("\nDate: " + todaysDate);
+print("Time: " + timeNow);
+File.append("\nDate: " + todaysDate, logPath);
+File.append("Time: " + timeNow, logPath);
 
 // Record the input and output directory. 
 print("\nInput Directory: " + inputDir);
@@ -214,7 +197,7 @@ dv_array = newArray(0);
 
 // Save .dv files in a dv_array:
 for (i=0; i<fileList.length; i++) {
-    if(endsWith(fileList[i], "R3D_D3D.dv"))
+    if(endsWith(fileList[i], "R3D.dv"))
     {
     	dv_array = Array.concat(dv_array, fileList[i]);
     }
@@ -358,13 +341,11 @@ for (i=0; i<dv_array.length; i++) {
 
     // Set brightness in channel1
     Stack.setChannel(1);
-    setMinAndMax(ch2min, ch2max);
-    print("Note - channel1 settings must match Channel2 settings for max and min brightness");
-    File.append("Note - channel1 settings must match Channel2 settings for max and min brightness", logPath);
-    print("\t--Setting Channel1 min: " + ch2min);
-	File.append("\t--Setting Channel1 min: " + ch2min, logPath);
-    print("\t--Setting Channel1 max: " + ch2max);
-	File.append("\t--Setting Channel1 max: " + ch2max, logPath);
+    setMinAndMax(ch1min, ch1max);
+    print("\t--Setting Channel1 min: " + ch1min);
+	File.append("\t--Setting Channel1 min: " + ch1min, logPath);
+    print("\t--Setting Channel1 max: " + ch1max);
+	File.append("\t--Setting Channel1 max: " + ch1max, logPath);
 
     // Set brightness in channel2
     Stack.setChannel(2);
@@ -389,7 +370,7 @@ for (i=0; i<dv_array.length; i++) {
     // Set rectangle
     print("\t--Get Region of Interest (ROI) Selection"); 
     File.append("\t--Get Region of Interest (ROI) Selection", logPath);
-	makeRectangle(125, 364, 333, 69);
+	makeRectangle(323, 524, 117, 46);
 	waitForUser("Action Required", "Move the rectangle to capture the membrane in the middle. Click OK to measure.");
 	
 	// Report selection bounds
@@ -397,10 +378,10 @@ for (i=0; i<dv_array.length; i++) {
     print("\t--Selection of ROI complete with coordinates: " + x + ", " + y + ", " + width + ", " + height); 
     File.append("\t--Selection of ROI complete with coordinates: " + x + ", " + y + ", " + width + ", " + height, logPath);
 	
-	// Get values from Ch02
-    print("\t--Select Channel 02"); 
-    File.append("\t--Select Channel 02", logPath);
-	Stack.setChannel(2);
+	// Get values from Ch01
+    print("\t--Select Channel 01"); 
+    File.append("\t--Select Channel 01", logPath);
+	Stack.setChannel(1);
 	roiManager("Add");
 	run("Plot Profile");
 	
@@ -416,16 +397,18 @@ for (i=0; i<dv_array.length; i++) {
 	
 	// Save distances if this is the first loop
 	if (i == 0){
-		buffer = "file\tchannel\t";
+		buffer = "file\tchannel\tsample\t";
 		for (j=0; j<xarray.length; j++) {
 			buffer = buffer + xarray[j] + "\t";
 		}
 		File.append(buffer, dataPath);
 	}
 	
-	// Save ch2 values
+	// Save ch1 values
+    print("\t--Reporting Channel 01 values: " + channel1_sample); 
+    File.append("\t--Reporting Channel 01 values: " + channel1_sample, logPath);
 	buffer = "";
-	buffer = dv_array[i] + "\tch2\t";
+	buffer = dv_array[i] + "\tch1\t" + channel1_sample + "\t";
 	for (j=0; j<xarray.length; j++) {
     	buffer = buffer + yarray[j] + "\t";
 	}
@@ -435,8 +418,8 @@ for (i=0; i<dv_array.length; i++) {
 	selectWindow(getTitle());
 	close();
 	
-    print("\t--Select Channel 01"); 
-    File.append("\t--Select Channel 01", logPath);
+    print("\t--Select Channel 02"); 
+    File.append("\t--Select Channel 02", logPath);
     
 	if (method == "Sum Slices"){
 		selectWindow("SUM_" + dv_array[i]);
@@ -446,33 +429,41 @@ for (i=0; i<dv_array.length; i++) {
 		selectWindow("AVERAGE_" + dv_array[i]);		
 	}
 
-	Stack.setChannel(1);
+	Stack.setChannel(2);
 	makeRectangle(x, y, width, height);
 
 	roiManager("Add");
 	run("Plot Profile");
 
-	ch1xarray = newArray(0);
-	ch1yarray = newArray(0);
-	Plot.getValues(ch1xarray, ch1yarray);
+	ch2xarray = newArray(0);
+	ch2yarray = newArray(0);
+	Plot.getValues(ch2xarray, ch2yarray);
 	
 	buffer = "";
 
-	// Save ch1 values
+	// Save ch2 values
+    print("\t--Reporting Channel 02 values: " + channel2_sample); 
+    File.append("\t--Reporting Channel 02 values: " + channel2_sample, logPath);
 	buffer = "";
-	buffer = dv_array[i] + "\tch1\t";
-	for (j=0; j<ch1yarray.length; j++) {
-    	buffer = buffer + ch1yarray[j] + "\t";
+	buffer = dv_array[i] + "\tch2\t" + channel2_sample + "\t";
+	for (j=0; j<ch2yarray.length; j++) {
+    	buffer = buffer + ch2yarray[j] + "\t";
 	}
 	File.append(buffer, dataPath);
+
+
+    
+   
+    // close file
+    close(dv_array[i]);
 
 	// Close plot
 	selectWindow(getTitle());
 	close();
 	
     // close files 
-    selectWindow(dv_array[i]);
-    close();
+    //selectWindow(dv_array[i]);
+    //close();
     
 }
 
