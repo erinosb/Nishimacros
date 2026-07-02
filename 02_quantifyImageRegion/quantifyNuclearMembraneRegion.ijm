@@ -344,8 +344,8 @@ for (i=0; i<dv_array.length; i++) {
     	File.append("\t--Nuclear midpoint: " + anteriorX + ", " + anteriorY, logPath);
     	print("\t--PM point: " + posteriorX + ", " + posteriorY);
     	File.append("\t--PM point: " + posteriorX + ", " + posteriorY, logPath);
-    	print("\t--AP axis angle: " + myangle + " degrees (image pixel data not rotated)");
-    	File.append("\t--AP axis angle: " + myangle + " degrees (image pixel data not rotated)", logPath);
+    	print("\t--Axis angle: " + myangle + " degrees (image pixel data not rotated)");
+    	File.append("\t--Axis angle: " + myangle + " degrees (image pixel data not rotated)", logPath);
     	
     	// Build a rotated rectangle SELECTION (not a rotated image) with the same
     	// dimensions as the original fixed rectangle (333 x 69), centered on the AP
