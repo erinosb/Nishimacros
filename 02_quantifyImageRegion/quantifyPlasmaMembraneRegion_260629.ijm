@@ -21,8 +21,13 @@
 
 // DIRECTORIES: Enter the input directory. This directory must have at least one R3D_D3D.dv files within it, preferably a set
 
-inputDir="/Volumes/YARROW/260625_Sam_RNAi_kinesins/00_raw/BMK-1_RNAi/LP306/220719_LP306_bmk-1_RNAi";
-outputDir="/Users/erinnishimura/Dropbox/LABWORK/PROJECTS/EOP269_Sam_ijmPractice/03_output_260702";
+  // Please replace <insertInputDirHere> with your own input directory. Remove the < and > symbols, too. 
+  // This directory must exist and must contain a series of image files that match the image file type in Line 127.
+inputDir="<insertInputDirHere>";
+
+  // Please replcce <insertOutputDirHere> with your own output directory. Remove the < and > symbols, too.
+  // This directory does not need to exist. It will be created.
+outputDir="<insertOutputDirHere>";
 
 // Z-PROJECT: Specify how many z-slices will be selecte for z-projection. Default is 35:
 zSliceDepth = 7;
