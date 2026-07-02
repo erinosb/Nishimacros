@@ -2,9 +2,9 @@
 ///    SELECT YOUR PARAMETERS      ///
 //////////////////////////////////////
 
-// DATE:     Started May 27, 2026
+// DATE:     Started May 27, 2026; modified July 2, 2026
 // AUTHOR:   Erin Osborne Nishimura
-// SCRIPT:   260527_quantifyNuclearMembraneRegion.ijm
+// SCRIPT:   quantifyNuclearMembraneRegion.ijm
 // PURPOSE:  This script takes as input a folder of .dv microscopy imgage files. Files have 3 or 4 channels and multiple z-projections. 
 //           This script then does the following:
 //              - Creates a z-projection of a fixed number of slices (user input required to set a start slice for each image)
@@ -19,20 +19,15 @@
 
 // Please change this part to your input and output directories and desired contact sheet file name
 
-// DIRECTORIES: Enter the input directory. 
-//inputDir="/Volumes/NESS/260518_Ambika_Paper/01_FIJI_Quantification/01_N2/250806_set3_imb2_rep1";
-//outputDir="/Volumes/NESS/260518_Ambika_Paper/01_FIJI_Quantification/01_N2/250806_set3_imb2_rep1/output";
+// DIRECTORIES: Enter the input and output directories. 
 
-//inputDir="/Volumes/NESS/260518_Ambika_Paper/01_FIJI_Quantification/01_N2/250806_set3_imb2_rep2";
-//outputDir="/Volumes/NESS/260518_Ambika_Paper/01_FIJI_Quantification/01_N2/250806_set3_imb2_rep2/output";
+  // Please replace <insertInputDirHere> with your own input directory. Remove the < and > symbols, too. 
+  // This directory must exist and must contain a series of image files that match the image file type in Line 127.
+inputDir="/Volumes/YARROW/260518_Ambika_Paper/01_FIJI_Quantification/01_N2/260527_N2_imb2_set3";
 
-//inputDir="/Volumes/NESS/260518_Ambika_Paper/01_FIJI_Quantification/01_N2/250807_set3_imb2_rep3";
-//outputDir="/Volumes/NESS/260518_Ambika_Paper/01_FIJI_Quantification/01_N2/250807_set3_imb2_rep3/output";
-
-inputDir="/Volumes/NESS/260518_Ambika_Paper/01_FIJI_Quantification/01_N2/260527_N2_imb2_set3";
-outputDir="/Volumes/NESS/260518_Ambika_Paper/01_FIJI_Quantification/01_N2/260527_N2_imb2_set3/output";
-
-
+  // Please replcce <insertOutputDirHere> with your own output directory. Remove the < and > symbols, too.
+  // This directory does not need to exist. It will be created.
+outputDir="/Volumes/YARROW/260518_Ambika_Paper/01_FIJI_Quantification/01_N2/260527_N2_imb2_set3/output_260702";
 
 // Z-PROJECT: Specify how many z-slices will be selected for z-projection. Default is 35:
 zSliceDepth = 7;
@@ -45,17 +40,6 @@ channel1_sample = "imb-2";
 channel2_sample = "set-3";
 channel3_sample = "";
 channel4_sample = "";
-
-
-// COLORS: Specify which channels will be merged into the final composite image.
-// Channels are organized in fiji from left [1] to right [4]. 
-// Possible channels are: channel1, channel2, channel3, channel4
-// Possible colors are: red, green, blue, gray, cyan, magenta, yellow
-// Select a channel by adding a color as a value; channels labeled "none" will not be included in the composite.
-channel1 = "green";
-channel2 = "magenta";
-channel3 = "blue";
-channel4 = "none";
 
 // MAX/MIN Brightness - OPTIONAL: Set the channel max and min to adjust brightness if you like. Leave at 0 if you want it automatically determined. 
 // Automatically determined brightness settings will determine min and max settings that yield a contrast of 0.35 in the first image
@@ -75,58 +59,6 @@ ch4max = 0;
 
 
 
-
-
-//////////////////////////////////////////////
-///    	      FUNCION SECTION              ///
-//////////////////////////////////////////////
-
-// Function to assign the color selector code to the desired color:
-function selectColor(channelcolor) {
-    if (channelcolor == "red"){
-    	colorselect = "c1";
-    	return colorselect;
-    } else if (channelcolor == "green"){
-    	colorselect = "c2";
-    	return colorselect;
-    } else if (channelcolor == "blue"){
-    	colorselect = "c3";
-    	return colorselect;
-    } else if (channelcolor == "gray"){
-    	colorselect = "c4";
-    	return colorselect;
-    } else if (channelcolor == "cyan"){
-    	colorselect = "c5";
-    	return colorselect;
-    } else if (channelcolor == "magenta"){
-    	colorselect = "c6";
-    	return colorselect;
-    } else if (channelcolor == "yellow"){
-    	colorselect = "c7";
-    	return colorselect;
-    } else {
-    	return 0;
-    }
-}
-
-function messageColorChoice(channelName, channelValue) {
-	message="";
-	if (channelValue != "none"){
-		message= channelName + " will be included in the composite in " + channelValue;
-	}   else {
-		message="";
-	}
-	return message;
-}
-
-//////////////////////////////////////////////
-///      FUNCION SECTION COMPLETE          ///
-//////////////////////////////////////////////
-
-
-
-
-
 //////////////////////////
 ///    START CODE      ///
 //////////////////////////
@@ -140,13 +72,13 @@ month = month + 1;
 todaysDate = d2s(year, 0) + "-" + d2s(month, 0) + "-" + d2s(dayOfMonth, 0);
 timeNow  = d2s(hour, 0) + d2s(minute, 0);
 
+// Create the output directory
+File.makeDirectory(outputDir);
+
 // Initialize logfile:
 // Choose output directory
 logPath = outputDir + "/" + todaysDate + "_" + timeNow + "_" + "logfile.txt";
 dataPath = outputDir + "/" + todaysDate + "_" + timeNow + "_" + "datafile.txt";
-
-// Create the output directory
-File.makeDirectory(outputDir);
 
 // set the working directory
 File.setDefaultDir(inputDir);
@@ -156,8 +88,8 @@ fileList = getFileList(inputDir);
 
 // Record time
 logfile = File.open(logPath);
-print("Initiaiting macro: 260527_quantifyNuclearMembraneRegion.ijm");
-File.append("Initiaiting macro: 260527_quantifyNuclearMembraneRegion.ijm", logPath);
+print("Initiaiting macro: quantifyNuclearMembraneRegion.ijm");
+File.append("Initiaiting macro: quantifyNuclearMembraneRegion.ijm", logPath);
 print("\nDate: " + todaysDate);
 print("Time: " + timeNow);
 File.append("\nDate: " + todaysDate, logPath);
@@ -169,28 +101,6 @@ print("Output Directory: " + outputDir + "\n");
 File.append("\nInput Directory: " + inputDir, logPath);
 File.append("Output Directory: " + outputDir + "\n", logPath);
 
-
-// Record the parameters:
-msg1=messageColorChoice("Channel 1", channel1);
-if ( msg1 != "") {
-	print(messageColorChoice("Channel 1", channel1));
-	File.append(messageColorChoice("Channel 1", channel1), logPath);
-}
-msg2=messageColorChoice("Channel 2", channel2);
-if ( msg2 != "") {
-	print(messageColorChoice("Channel 2", channel2));
-	File.append(messageColorChoice("Channel 2", channel2), logPath);
-}
-msg3=messageColorChoice("Channel 3", channel3);
-if ( msg3 != "") {
-	print(messageColorChoice("Channel 3", channel3));
-	File.append(messageColorChoice("Channel 3", channel3), logPath);
-}
-msg4=messageColorChoice("Channel 4", channel4);
-if ( msg4 != "") {
-	print(messageColorChoice("Channel 4", channel4));
-	File.append(messageColorChoice("Channel 4", channel4), logPath);
-}
 
 // restrict list to R3D_D3D.dv files
 dv_array = newArray(0);
@@ -277,48 +187,66 @@ for (i=0; i<dv_array.length; i++) {
     print("\t--Z-projection complete from " + startSlice + " to " + stopSlice + " using " + method + " method.");
 	File.append("\t--Z-projection complete from " + startSlice + " to " + stopSlice + " using " + method + " method.", logPath);
 	
-    // Set brightness - if this is the first run through the loop and no channel max/min are set, determin a max/min to use:
-    // Set the max and min thresholds
-    if (i == 0){
+     if (i == 0){
     	print("\t--Evaluating Min and Max Thresholds");
     	File.append("\t--Evaluating Min and Max Thresholds", logPath);
-		if (channel2 != "none"){
-    	    if (ch2min == 0){
-    			Stack.setChannel(2);
-    			run("Enhance Contrast", "saturated=0.35");
-    			getMinAndMax(min, max);
-    			ch2min = min;
-    			print("\t--Setting ch2min:" + ch2min);
-    			File.append("\t--Setting ch2min:" + ch2min, logPath);
-    		}
-    		if (ch2max == 0){
-    			Stack.setChannel(2);
-    			run("Enhance Contrast", "saturated=0.35");
-    			getMinAndMax(min, max);
-    			ch2max = max;
-    			print("\t--Setting ch2max:" + ch2max);
-    			File.append("\t--Setting ch2max:" + ch2max, logPath);
-    		}
-		}
-		if (channel3 != "none"){
-    	    if (ch3min == 0){
-    			Stack.setChannel(3);
-    			run("Enhance Contrast", "saturated=0.35");
-    			getMinAndMax(min, max);
-    			ch3min = min;
-    			print("\t--Setting ch3min:" + ch3min);
-    			File.append("\t--Setting ch3min:" + ch3min, logPath);
-    		}
-    		if (ch3max == 0){
-    			Stack.setChannel(3);
-    			run("Enhance Contrast", "saturated=0.35");
-    			getMinAndMax(min, max);
-    			ch3max = max;
-    			print("\t--Setting ch3max:" + ch3max);
-    			File.append("\t--Setting ch3max:" + ch3max, logPath);
-    		}
-		}
-		if (channel4 != "none"){
+		
+		// If ch1min or ch1max are set to 0, get values from auto brightness
+		if (ch1min == 0){
+    		Stack.setChannel(1);
+    		run("Enhance Contrast", "saturated=0.35");
+    		getMinAndMax(min, max);
+    		ch1min = min;
+    		print("\t--Setting ch1min:" + ch1min);
+    		File.append("\t--Setting ch1min:" + ch1min, logPath);
+    	}
+    	if (ch1max == 0){
+    		Stack.setChannel(1);
+    		run("Enhance Contrast", "saturated=0.35");
+    		getMinAndMax(min, max);
+    		ch1max = max;
+    		print("\t--Setting ch1max:" + ch1max);
+    		File.append("\t--Setting ch1max:" + ch1max, logPath);
+    	}
+		
+		// If ch2min or ch2max are set to 0, get values from auto brightness
+    	if (ch2min == 0){
+    		Stack.setChannel(2);
+    		run("Enhance Contrast", "saturated=0.35");
+    		getMinAndMax(min, max);
+    		ch2min = min;
+    		print("\t--Setting ch2min:" + ch2min);
+    		File.append("\t--Setting ch2min:" + ch2min, logPath);
+    	}
+    	if (ch2max == 0){
+    		Stack.setChannel(2);
+    		run("Enhance Contrast", "saturated=0.35");
+    		getMinAndMax(min, max);
+    		ch2max = max;
+    		print("\t--Setting ch2max:" + ch2max);
+    		File.append("\t--Setting ch2max:" + ch2max, logPath);
+    	}
+		
+		// If ch3min or ch3max are set to 0, get values from auto brightness
+    	if (ch3min == 0){
+    		Stack.setChannel(3);
+    		run("Enhance Contrast", "saturated=0.35");
+    		getMinAndMax(min, max);
+    		ch3min = min;
+    		print("\t--Setting ch3min:" + ch3min);
+    		File.append("\t--Setting ch3min:" + ch3min, logPath);
+    	}
+    	if (ch3max == 0){
+    		Stack.setChannel(3);
+    		run("Enhance Contrast", "saturated=0.35");
+    		getMinAndMax(min, max);
+    		ch3max = max;
+    		print("\t--Setting ch3max:" + ch3max);
+    		File.append("\t--Setting ch3max:" + ch3max, logPath);
+    	}
+		
+		// Check if there is a channel4. If there is, check if the ch1min and ch1max are set to 0. 
+		if (channelNo == 4){
     	    if (ch4min == 0){
     			Stack.setChannel(4);
     			run("Enhance Contrast", "saturated=0.35");
@@ -339,7 +267,7 @@ for (i=0; i<dv_array.length; i++) {
 	}
     
 
-    // Set brightness in channel1
+   // Set brightness in channel1
     Stack.setChannel(1);
     setMinAndMax(ch1min, ch1max);
     print("\t--Setting Channel1 min: " + ch1min);
@@ -352,32 +280,144 @@ for (i=0; i<dv_array.length; i++) {
     setMinAndMax(ch2min, ch2max);
     print("\t--Setting Channel2 min: " + ch2min);
 	File.append("\t--Setting Channel2 min: " + ch2min, logPath);
-    print("\t--Setting Channe2 max: " + ch2max);
-	File.append("\t--Setting Channe2 max: " + ch2max, logPath);
+    print("\t--Setting Channel2 max: " + ch2max);
+	File.append("\t--Setting Channel2 max: " + ch2max, logPath);
+
+    // Set brightness in channel3
+    Stack.setChannel(3);
+    setMinAndMax(ch3min, ch3max);
+    print("\t--Setting Channel3 min: " + ch3min);
+	File.append("\t--Setting Channel3 min: " + ch3min, logPath);
+    print("\t--Setting Channel3 max: " + ch3max);
+	File.append("\t--Setting Channel3 max: " + ch3max, logPath);
     
-    // Rotate the image as per user specifications
-    print("\t--Starting Rotation");  
-    File.append("\t--Starting Rotation", logPath);
+    // If there is a channel4, set its brightness
+    if (channelNo == 4);
+    {	
+    	Stack.setChannel(4);
+    	setMinAndMax(ch4min, ch4max);
+    	print("\t--Setting Channel4 min: " + ch4min);
+    	File.append("\t--Setting Channel4 min: " + ch4min, logPath);
+    	print("\t--Setting Channel4 max: " + ch4max);
+    	File.append("\t--Setting Channel4 max: " + ch4max, logPath);
+	}
     
-    waitForUser("Action Required", "Using the next dialog box, rotate the image so that anterior is to the left and posterior to the right. Click OK to begin.");
-    run("Rotate... ");
-    myangle = getValue("rotation.angle");
+
+
+    // Determine nuclear axis from user-clicked middle-of-nucleus and plasma membrane
+    // (image pixel data is never rotated - only the rectangle SELECTION is rotated,
+    // so raw intensity values are preserved exactly, unaffected by interpolation)
+    print("\t--Starting nuclear membrane axis determination");  
+    File.append("\t--Starting nuclear membrane axis determination", logPath);
     
-    // Report rotation
-    print("\t--Rotation complete. Rotated by " + myangle + " angle");
-	File.append("\t--Rotation complete. Rotated by " + myangle + " angle", logPath);
+    // This whole block (point-clicking through rectangle placement) repeats until
+    // the user confirms the rectangle looks right. Only this block redoes - Z-projection
+    // and brightness settings above are NOT reset between redo attempts.
+    apConfirmed = false;
+    redoAttempt = 0;
+    do {
+    	redoAttempt = redoAttempt + 1;
+    	if (redoAttempt > 1) {
+    		print("\t--Redo attempt #" + redoAttempt + " for nuclear midpoint/rectangle");
+    		File.append("\t--Redo attempt #" + redoAttempt + " for nuclear midpoint/rectangle", logPath);
+    	}
+    	
+    	setTool("multipoint");
+    	waitForUser("Action Required", "Using the Point tool, click ONCE on the middle of the nucleus, then ONCE on the plasma membrane in the direction of interest (2 points total, in that order). Click OK when both points are placed.");
+    	
+    	getSelectionCoordinates(apXpoints, apYpoints);
+    	if (apXpoints.length != 2) {
+    		exit("Expected exactly 2 points (nuclear midpoint, plasma membrane) but got " + apXpoints.length + ". Please re-run and place exactly 2 points.");
+    	}
+    	
+    	anteriorX = apXpoints[0];
+    	anteriorY = apYpoints[0];
+    	posteriorX = apXpoints[1];
+    	posteriorY = apYpoints[1];
+    	
+    	// Angle of the AP axis, for logging only (not used to build the rectangle below,
+    	// which is built directly from the two clicked points via makeRotatedRectangle)
+    	myangle = atan2(posteriorY - anteriorY, posteriorX - anteriorX) * 180 / PI;
+    	
+    	// Report angle and clicked points
+    	print("\t--Nuclear midpoint: " + anteriorX + ", " + anteriorY);
+    	File.append("\t--Nuclear midpoint: " + anteriorX + ", " + anteriorY, logPath);
+    	print("\t--PM point: " + posteriorX + ", " + posteriorY);
+    	File.append("\t--PM point: " + posteriorX + ", " + posteriorY, logPath);
+    	print("\t--AP axis angle: " + myangle + " degrees (image pixel data not rotated)");
+    	File.append("\t--AP axis angle: " + myangle + " degrees (image pixel data not rotated)", logPath);
+    	
+    	// Build a rotated rectangle SELECTION (not a rotated image) with the same
+    	// dimensions as the original fixed rectangle (333 x 69), centered on the AP
+    	// axis defined by the two clicked points. makeRotatedRectangle(x1,y1,x2,y2,width)
+    	// takes a centerline from (x1,y1) to (x2,y2) as the rectangle's LONG axis, and
+    	// 'width' as the perpendicular (short) dimension - so the centerline length
+    	// must equal the original long dimension (333) and width must equal the
+    	// original short dimension (69), regardless of how far apart the two clicked
+    	// points actually are.
+    	print("\t--Get Region of Interest (ROI) Selection"); 
+    	File.append("\t--Get Region of Interest (ROI) Selection", logPath);
+    	rectLength = 117; // long dimension, same as original rectangle width
+    	rectThickness = 46; // short dimension, same as original rectangle height
+    	
+    	// Unit vector along the AP axis (from anterior to posterior)
+    	apDeltaX = posteriorX - anteriorX;
+    	apDeltaY = posteriorY - anteriorY;
+    	apDist = sqrt(apDeltaX*apDeltaX + apDeltaY*apDeltaY);
+    	apUnitX = apDeltaX / apDist;
+    	apUnitY = apDeltaY / apDist;
+    	
+    	// Centerline of length rectLength, centered at the midpoint of the two clicked points,
+    	// oriented along the AP axis
+    	midX = (anteriorX + posteriorX) / 2;
+    	midY = (anteriorY + posteriorY) / 2;
+    	lineX1 = midX - (rectLength/2) * apUnitX;
+    	lineY1 = midY - (rectLength/2) * apUnitY;
+    	lineX2 = midX + (rectLength/2) * apUnitX;
+    	lineY2 = midY + (rectLength/2) * apUnitY;
+    	
+    	makeRotatedRectangle(lineX1, lineY1, lineX2, lineY2, rectThickness);
+    	waitForUser("Action Required", "Move the rotated rectangle to capture the nuclear membrane in the middle. Click OK to measure.");
+    	
+    	// Report selection bounds
+    	// NOTE: getSelectionBounds returns the axis-aligned BOUNDING BOX of the rotated
+    	// rectangle, not its true length/thickness. The rectangle's actual dimensions remain
+    	// rectLength x rectThickness (333 x 69) regardless of rotation; bounding-box x/y/width/height
+    	// below are logged for reference only and should not be interpreted as the rectangle's
+    	// own dimensions when myangle is not a multiple of 90.
+    	getSelectionBounds(x, y, width, height);
+    	print("\t--Selection of ROI complete. Rectangle dimensions: " + rectLength + " x " + rectThickness + ", AP angle " + myangle + " degrees. Bounding box: " + x + ", " + y + ", " + width + ", " + height); 
+    	File.append("\t--Selection of ROI complete. Rectangle dimensions: " + rectLength + " x " + rectThickness + ", AP angle " + myangle + " degrees. Bounding box: " + x + ", " + y + ", " + width + ", " + height, logPath);
+    	
+    	// Confirm before proceeding. "Cancel" exits the whole macro (getBoolean default
+    	// behavior); "No" redoes the point-clicking and rectangle placement above;
+    	// "Yes" continues on to saving/measurement below.
+    	apConfirmed = getBoolean("Does the rectangle look correctly placed and oriented along the nuclear membrane?", "Yes, continue", "No, redo points/rectangle");
+    	if (!apConfirmed) {
+    		print("\t--User requested redo of points/rectangle");
+    		File.append("\t--User requested redo of points/rectangle", logPath);
+    	}
+    } while (!apConfirmed);
     
-    // Set rectangle
-    print("\t--Get Region of Interest (ROI) Selection"); 
-    File.append("\t--Get Region of Interest (ROI) Selection", logPath);
-	makeRectangle(323, 524, 117, 46);
-	waitForUser("Action Required", "Move the rectangle to capture the membrane in the middle. Click OK to measure.");
+
+	// Save a .tif of the full image with the rotated ROI box drawn on it as an overlay.
+	// run("Add Selection...") burns the rectangle into the image's overlay (does not
+	// change pixel values). saveAs() renames the active window to match the saved
+	// filename, so the original title is restored immediately after via rename(),
+	// since the SUM_/MAX_/AVERAGE_ title is needed further down for Plot Profile.
+	print("\t--Saving ROI overlay image (.tif)");
+	File.append("\t--Saving ROI overlay image (.tif)", logPath);
 	
-	// Report selection bounds
-	getSelectionBounds(x, y, width, height);
-    print("\t--Selection of ROI complete with coordinates: " + x + ", " + y + ", " + width + ", " + height); 
-    File.append("\t--Selection of ROI complete with coordinates: " + x + ", " + y + ", " + width + ", " + height, logPath);
-	
+	originalTitle = getTitle();
+	run("Add Selection...");
+	baseName = File.getNameWithoutExtension(dv_array[i]);
+	tifOutPath = outputDir + "/" + baseName + "_ROI.tif";
+	saveAs("Tiff", tifOutPath);
+	rename(originalTitle);
+	print("\t--Saved: " + tifOutPath);
+	File.append("\t--Saved: " + tifOutPath, logPath);
+
+
 	// Get values from Ch01
     print("\t--Select Channel 01"); 
     File.append("\t--Select Channel 01", logPath);
